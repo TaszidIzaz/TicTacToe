@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.tictactoe.TicTacToeController" stylesheets="@tictactoe.css">
+
+    <GridPane fx:id="gridPane" alignment="CENTER" hgap="10" vgap="10">
+        <Button fx:id="cell00"  />
+        <Button fx:id="cell01"  />
+        <Button fx:id="cell02"  />
+        <Button fx:id="cell10"  />
+        <Button fx:id="cell11"  />
+        <Button fx:id="cell12"  />
+        <Button fx:id="cell20"  />
+        <Button fx:id="cell21"  />
+        <Button fx:id="cell22"  />
+    </GridPane>
+
+    <VBox styleClass="centered-box" >
+        <RadioButton text="Light Theme" onAction="#handleThemeChange" styleClass="theme-button"/>
+        <RadioButton text="Dark Theme" onAction="#handleThemeChange" styleClass="theme-button"/>
+        <RadioButton text="Royal Theme" onAction="#handleThemeChange" styleClass="theme-button"/>
+        <RadioButton text="Red Theme" onAction="#handleThemeChange" styleClass="theme-button"/>
+    </VBox>
+
+    <HBox styleClass="centered-box" >
+        <ToggleButton text="Random AI" onAction="#handleRandomAI" styleClass="button"/>
+        <ToggleButton text="Defensive AI" onAction="#handleDefensiveAI" styleClass="button"/>
+        <ToggleButton text="Restart" onAction="#restart" styleClass="button"/>
+    </HBox>
+</VBox>

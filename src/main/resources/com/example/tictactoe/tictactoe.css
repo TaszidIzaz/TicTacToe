@@ -1,0 +1,52 @@
+.centered-box {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+    -fx-padding: 20px;
+}
+
+.light-theme {
+    -fx-background-color: #f0f0f0;
+}
+
+.dark-theme  {
+    -fx-background-color: #333333;
+    -fx-text-fill: #ffffff;
+}
+
+.royal-theme  {
+    -fx-background-color: royalblue;
+    -fx-text-fill: #ffffff;
+}
+
+.red-theme  {
+    -fx-background-color: red;
+    -fx-text-fill: #ffffff;
+}
+
+.button {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+}
+
+.button:selected {
+    -fx-background-color: #d0d0d0;
+}
+
+.theme-button {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333;
+    -fx-padding: 5px;
+    -fx-cursor: hand;
+    -fx-background-color: #f0f0f0;
+    -fx-border-radius: 5px;
+    -fx-border-color: #d0d0d0;
+}
+
+.theme-button:selected {
+    -fx-background-color: #d0d0d0;
+}
+
