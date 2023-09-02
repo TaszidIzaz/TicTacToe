@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.shape.Line;
 
 public class Tile extends StackPane {
     private char occupiedBy = ' ';
@@ -13,6 +14,7 @@ public class Tile extends StackPane {
 
     private Rectangle border = new Rectangle(100, 100);
     private Text text = new Text();
+    private Line winLine = new Line();
 
     private GameManager gameManager;
 
@@ -25,6 +27,7 @@ public class Tile extends StackPane {
         text.setFont(Font.font(40));
         getChildren().addAll(border, text);
         setOnMouseClicked(e -> handleClick());
+
     }
 
     public boolean isOccupied() {
@@ -57,9 +60,5 @@ public class Tile extends StackPane {
         border.setStroke(Color.RED);
     }
 
-    public void highlightWinningTiles(int... indices) {
-        for (int i = 0; i < indices.length; i += 2) {
-            tiles[indices[i]][indices[i + 1]].setAsWinningTile();
-        }
-    }
+
 }

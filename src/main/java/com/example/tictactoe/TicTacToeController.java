@@ -7,6 +7,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 
 public class TicTacToeController {
 
@@ -15,11 +18,19 @@ public class TicTacToeController {
     @FXML
     private GridPane gridPane;
 
+    @FXML
+    private Pane overlayPane;
+
+
     private Tile[][] tiles = new Tile[3][3];
     private ThemeManager themeManager;
 
     private RandomAI randomAI;
     private boolean randomAIMode = false;
+
+    private DefensiveAI defensiveAI;
+
+    private boolean defensiveAIMode = false;
 
     private GameManager gameManager;
 
@@ -27,13 +38,20 @@ public class TicTacToeController {
         return randomAIMode;
     }
 
+    public boolean isDefensiveAIMode() { return defensiveAIMode; }
+
+    private Line winLine;
+
+
 
     @FXML
     private void initialize() {
 
         gameManager = new GameManager(tiles, this);
         themeManager = new ThemeManager(gridPane);
+        defensiveAI = new DefensiveAI(tiles, gameManager);
         randomAI = new RandomAI(tiles, gameManager);
+
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -52,7 +70,11 @@ public class TicTacToeController {
             if (isRandomAIMode() && currentPlayer == 'O') {
                 randomAI.makeMove();
                 switchPlayer();
+            } else if (isDefensiveAIMode() && currentPlayer == 'O') {
+                defensiveAI.makeMove();
+                switchPlayer();
             }
+
             gameManager.checkForWinner(tile);
         }
     }
@@ -71,6 +93,11 @@ public class TicTacToeController {
 
     public void resetBoard() {
         currentPlayer = 'X';
+
+        if (winLine != null) {
+            overlayPane.getChildren().remove(winLine);
+            winLine = null;
+        }
 
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -94,8 +121,17 @@ public class TicTacToeController {
 
     }
 
-
     public void handleDefensiveAI(ActionEvent actionEvent) {
+        resetBoard();
+
+        ToggleButton btn = (ToggleButton) actionEvent.getSource();
+        defensiveAIMode = btn.isSelected();
+        if (defensiveAIMode) {
+            if (currentPlayer == 'O') {
+                defensiveAI.makeMove();
+                switchPlayer();
+            }
+        }
 
     }
 
@@ -132,6 +168,33 @@ public class TicTacToeController {
         alert.setContentText(" It's a tie!");
 
         alert.showAndWait();
+    }
+
+    public void highlightWinningTiles(int... indices) {
+        if (indices.length != 6) {
+            return;
+        }
+
+        double tileSize = 115.0;
+        double startX = indices[1] * tileSize + tileSize / 2;
+        double startY = indices[0] * tileSize + tileSize / 2;
+        double endX = indices[5] * tileSize + tileSize / 2;
+        double endY = indices[4] * tileSize + tileSize / 2;
+
+        if (winLine != null) {
+            overlayPane.getChildren().remove(winLine);
+        }
+
+        winLine = new Line(startX, startY, endX, endY);
+        winLine.setStroke(Color.BLACK);
+        winLine.setStrokeWidth(2);
+        winLine.setMouseTransparent(true);
+
+        overlayPane.getChildren().add(winLine);
+
+        for (int i = 0; i < indices.length; i += 2) {
+            tiles[indices[i]][indices[i + 1]].setAsWinningTile();
+        }
     }
 
 }

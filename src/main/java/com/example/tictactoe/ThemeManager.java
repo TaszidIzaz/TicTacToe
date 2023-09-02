@@ -2,52 +2,43 @@ package com.example.tictactoe;
 
 import javafx.scene.control.RadioButton;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 
 public class ThemeManager {
 
     private GridPane gridPane;
+    private Theme selectedTheme;
 
     public ThemeManager(GridPane gridPane) {
         this.gridPane = gridPane;
     }
 
     public void changeThemeBasedOnSelection(RadioButton selectedRadioButton) {
-        String theme = selectedRadioButton.getText();
+        String themeName = selectedRadioButton.getText();
+        selectedTheme = getThemeByName(themeName);
 
-        gridPane.getStyleClass().removeAll("light-theme", "dark-theme", "royal-theme", "red-theme");
-
-        if (theme.equals("Light Theme")) {
-            gridPane.getStyleClass().add("light-theme");
-        } else if (theme.equals("Dark Theme")) {
-            gridPane.getStyleClass().add("dark-theme");
-        } else if (theme.equals("Royal Theme")) {
-            gridPane.getStyleClass().add("royal-theme");
-        } else if (theme.equals("Red Theme")) {
-            gridPane.getStyleClass().add("red-theme");
+        if (selectedTheme != null) {
+            selectedTheme.applyTheme(gridPane);
+            applyBoardTheme();
         }
-
-        changeBoardTheme(theme);
     }
 
-    private void changeBoardTheme(String theme) {
-        Color boardColor = Color.WHITE;
-
-        if (theme.equals("Dark Theme")) {
-            boardColor = Color.DARKGRAY;
-        } else if (theme.equals("Royal Theme")) {
-            boardColor = Color.ROYALBLUE;
-        } else if (theme.equals("Red Theme")) {
-            boardColor = Color.FIREBRICK;
-        }
-
-        gridPane.setStyle("-fx-background-color: " + toRGBCode(boardColor));
+    private void applyBoardTheme() {
+        String boardColor = selectedTheme.getBoardColor();
+        gridPane.setStyle("-fx-background-color: " + boardColor);
     }
 
-    private String toRGBCode(Color color) {
-        return String.format("#%02X%02X%02X",
-                (int) (color.getRed() * 255),
-                (int) (color.getGreen() * 255),
-                (int) (color.getBlue() * 255));
+    private Theme getThemeByName(String themeName) {
+        switch (themeName) {
+            case "Light Theme":
+                return new LightTheme();
+            case "Dark Theme":
+                return new DarkTheme();
+            case "Royal Theme":
+                return new RoyalTheme();
+            case "Red Theme":
+                return new RedTheme();
+            default:
+                return null;
+        }
     }
 }
